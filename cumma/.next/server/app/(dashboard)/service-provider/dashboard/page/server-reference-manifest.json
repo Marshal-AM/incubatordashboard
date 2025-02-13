@@ -1,0 +1,27 @@
+{
+  "node": {
+    "40f4d9e69f157018132f44b4d577fd91e95ab3d6b2": {
+      "workers": {
+        "app/(dashboard)/service-provider/dashboard/page": {
+          "moduleId": "[project]/.next-internal/server/app/(dashboard)/service-provider/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/service-provider.ts [app-rsc] (ecmascript)\" } [app-rsc] (ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(dashboard)/service-provider/dashboard/page": "action-browser"
+      }
+    },
+    "00571fb644210b30e0dcb910ddd2caac2656c2bbf9": {
+      "workers": {
+        "app/(dashboard)/service-provider/dashboard/page": {
+          "moduleId": "[project]/.next-internal/server/app/(dashboard)/service-provider/dashboard/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/service-provider.ts [app-rsc] (ecmascript)\" } [app-rsc] (ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/(dashboard)/service-provider/dashboard/page": "action-browser"
+      }
+    }
+  },
+  "edge": {}
+}

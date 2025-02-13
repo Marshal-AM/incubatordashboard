@@ -1,0 +1,15 @@
+{
+  "/(dashboard)/service-provider/profile/page": "app/(dashboard)/service-provider/profile/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/upload/route": "app/api/upload/route.js",
+  "/(dashboard)/service-provider/bookings/page": "app/(dashboard)/service-provider/bookings/page.js",
+  "/api/bookings/route": "app/api/bookings/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/(dashboard)/service-provider/my-facilities/page": "app/(dashboard)/service-provider/my-facilities/page.js",
+  "/api/facilities/route": "app/api/facilities/route.js",
+  "/api/facilities/[id]/route": "app/api/facilities/[id]/route.js",
+  "/(dashboard)/service-provider/add-facilities/page": "app/(dashboard)/service-provider/add-facilities/page.js",
+  "/(dashboard)/service-provider/dashboard/page": "app/(dashboard)/service-provider/dashboard/page.js",
+  "/api/dashboard/route": "app/api/dashboard/route.js"
+}
