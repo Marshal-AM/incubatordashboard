@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { signIn, useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, Suspense } from "react";
 
 import { Checkbox } from "@/components/ui/checkbox";
@@ -15,23 +15,14 @@ import { signInSchema } from "@/lib/validations/auth";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
+import { SearchParamsWrapper } from "@/components/SearchParamsWrapper";
 
 type FormData = z.infer<typeof signInSchema>;
 
 export default function SignIn() {
   const router = useRouter();
   const { data: session } = useSession();
-
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <SignInForm session={session} router={router} />
-    </Suspense>
-  );
-}
-
-function SignInForm({ session, router }: { session: any; router: any }) {
-  const searchParams = useSearchParams();
-  const from = searchParams.get("from");
+  let from = "";
 
   useEffect(() => {
     if (session?.user) {
@@ -74,6 +65,9 @@ function SignInForm({ session, router }: { session: any; router: any }) {
         });
         return;
       }
+
+      // Redirect user after successful sign-in
+      router.push(from || "/dashboard");
     } catch {
       setError("root", {
         type: "manual",
@@ -84,6 +78,10 @@ function SignInForm({ session, router }: { session: any; router: any }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <Suspense fallback={<div>Loading...</div>}>
+        <SearchParamsWrapper />
+      </Suspense>
+
       <div className="text-center">
         <h1 className="text-2xl font-semibold">Sign in</h1>
         <p className="mt-2 text-sm text-muted-foreground">
