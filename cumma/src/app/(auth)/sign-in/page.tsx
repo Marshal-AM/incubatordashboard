@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation"; // Add useSearchParams
+import { useEffect, useState } from "react"; // Add useState for loading state
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -21,11 +21,14 @@ type FormData = z.infer<typeof signInSchema>;
 
 export default function SignIn() {
   const router = useRouter();
-  const { data: session } = useSession();
-  let from = "";
+  const searchParams = useSearchParams(); // Get search params
+  const { data: session, status } = useSession(); // Add status to track session loading
+  const [isLoading, setIsLoading] = useState(false); // Add loading state
+  const from = searchParams.get("from") || ""; // Get the "from" query parameter
 
   useEffect(() => {
-    if (session?.user) {
+    if (status === "authenticated" && session?.user) {
+      // Redirect based on user type or "from" query parameter
       const redirectTo =
         from ||
         (session.user.userType === "startup"
@@ -33,7 +36,7 @@ export default function SignIn() {
           : "/service-provider/dashboard");
       router.push(redirectTo);
     }
-  }, [session, from, router]);
+  }, [session, status, from, router]);
 
   const {
     register,
@@ -46,6 +49,7 @@ export default function SignIn() {
   });
 
   const onSubmit = async (data: FormData) => {
+    setIsLoading(true); // Set loading state to true
     try {
       const result = await signIn("credentials", {
         email: data.email,
@@ -63,16 +67,18 @@ export default function SignIn() {
               ? "Incorrect password. Please try again or use the forgot password option."
               : "Failed to sign in. Please try again.",
         });
+        setIsLoading(false); // Reset loading state on error
         return;
       }
 
-      // Redirect user after successful sign-in
-      router.push(from || "/dashboard");
+      // If sign-in is successful, wait for the session to update
+      // The useEffect hook will handle the redirection once the session is updated
     } catch {
       setError("root", {
         type: "manual",
         message: "An unexpected error occurred. Please try again.",
       });
+      setIsLoading(false); // Reset loading state on error
     }
   };
 
@@ -154,7 +160,11 @@ export default function SignIn() {
         </Link>
       </div>
 
-      <LoadingButton type="submit" className="w-full h-12" loading={isSubmitting}>
+      <LoadingButton
+        type="submit"
+        className="w-full h-12"
+        loading={isLoading || isSubmitting} // Use isLoading or isSubmitting
+      >
         Sign in <span className="ml-2">→</span>
       </LoadingButton>
 
