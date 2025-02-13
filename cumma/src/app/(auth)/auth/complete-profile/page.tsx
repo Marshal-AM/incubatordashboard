@@ -3,8 +3,9 @@
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { OAuthCompletion } from '@/components/auth/oauth-completion'
+import { Suspense } from 'react'
 
-export default function CompleteProfile() {
+function CompleteProfileContent() {
   const searchParams = useSearchParams()
   const userType = searchParams.get('type') as 'startup' | 'Service Provider'
 
@@ -40,4 +41,12 @@ export default function CompleteProfile() {
       </div>
     </div>
   )
-} 
+}
+
+export default function CompleteProfile() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CompleteProfileContent />
+    </Suspense>
+  )
+}
